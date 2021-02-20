@@ -56,7 +56,7 @@ let displaySvgWithZoom (zoom:float) (svgReact: ReactElement) (dispatch: Dispatch
                     Width sizeInPixels           
                 ]
               Ref (fun html -> 
-                        getSvgClientRect <- fun () -> (Some (html.getBoundingClientRect()))
+                        getSvgClientRect <- fun () -> (Some (html.getBoundingClientRect())))
             ]
             [ g // group list of elements with list of attributes
                 [ Style [Transform (sprintf "scale(%f)" zoom)]] // top-level transform style attribute for zoom
