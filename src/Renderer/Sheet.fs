@@ -27,6 +27,9 @@ let zoom = 1.0
 /// current scroll position, and chnage scroll position to keep centre of screen a fixed point.
 let displaySvgWithZoom (zoom:float) (svgReact: ReactElement) (dispatch: Dispatch<Msg>)=
     let sizeInPixels = sprintf "%.2fpx" ((1000. * zoom))
+    /// canvas geometry as Types.ClientRect - could be converted to your bounding box type
+    /// this will be set when the canvas is first created and then provide info about how the canvas is scrolled.
+    let mutable svgClientRect: Types.ClientRect option = None // svgClientRect will contain the canvas bounding box
     /// Is the mouse button currently down?
     let mDown (ev:Types.MouseEvent) = 
         if ev.buttons <> 0. then true else false
@@ -52,6 +55,8 @@ let displaySvgWithZoom (zoom:float) (svgReact: ReactElement) (dispatch: Dispatch
                     Height sizeInPixels
                     Width sizeInPixels           
                 ]
+              Ref (fun html -> 
+                        svgClientRect <- Some <| html.getBoundingClientRect())
             ]
             [ g // group list of elements with list of attributes
                 [ Style [Transform (sprintf "scale(%f)" zoom)]] // top-level transform style attribute for zoom
